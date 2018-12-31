@@ -1,13 +1,11 @@
-#!/usr/bin/python3
 import leancloud
-import colorama
 import time
+import getpass
 
-leancloud.init("IDDU0rkX0FJ9hi2SFQgP1YIt-gzGzoHsz", "K3zSqgPWAssTN9kyKWDJWG8y")
-colorama.init()
+leancloud.init("ULc6VQsRiQr4NENpfoJpfd52-gzGzoHsz", "iYA2I9QBd6SJ1fwGOQxceyQD")
 
-Chat = leancloud.Object.extend('talk')
-todo = Chat.create_without_data('5c29b63afb4ffe005fb0de88')
+Chat = leancloud.Object.extend('chat')
+todo = Chat.create_without_data('5c28b8dd9f54540070f86b74')
 
 def printinfo(): # {{{1
     'print infomation'
@@ -18,10 +16,10 @@ def printinfo(): # {{{1
         print(talk[i])
     for i in range(ptr+1):
         print(talk[i])
-
+        
 def first(user): # {{{1
     'first join in'
-    info = Chat.create_without_data('5c29b63afb4ffe005fb0de88')
+    info = Chat.create_without_data('5c28b709fb4ffe005fa5c1bc')
     info.fetch()
     print('Notice:\n', info.get('content'))
     choose = input('login or register? ')
@@ -29,11 +27,11 @@ def first(user): # {{{1
         return 'fail'
     if choose[0] == 'l':
         name = input('User name:')
-        passwd = input('Password:')
+        passwd = getpass.getpass('Password:')
         user.login(name, passwd)
     elif choose[0] == 'r':
         name = input('User name:')
-        passwd = input('Password:')
+        passwd = getpass.getpass('Password:')
         user.set_username(name)
         user.set_password(passwd)
         user.sign_up()
@@ -52,29 +50,16 @@ def updateinfo(user, con): # {{{1
     todo.set('point', ptr)
     todo.save()
 
-def welcome(): # {{{1
-    'welcome screen'
-    print(colorama.Fore.BLUE, end='')
-    print('┌────────────────────────┐')
-    print('│      Welcome !!!       │')
-    print('│                        │')
-    print('│  p   y   c   h   a   t │')
-    print('│                        │')
-    print('│                        │')
-    print('└────────────────────────┘')
-    print(colorama.Style.RESET_ALL)
-
 def main(): # {{{1
     'Main function'
     user = leancloud.User()
-    welcome()
     if first(user) == 'fail':
         print('failed')
         return 1
     while True:
         printinfo()
         con = input('Input yours(press :q to quit): ')
-        if con in ('fuck', ':q'):
+        if con in ('quit', 'fuck', ':q'):
             break
         else:
             updateinfo(user, con)
